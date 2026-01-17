@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Next Word Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>🔮 Next Word Prediction</h1>
+
+    <textarea id="inputText" placeholder="Type a sentence..."></textarea>
+
+    <button onclick="predict()">Predict Next Word</button>
+
+    <div class="result">
+        <span>Predicted Next Word:</span>
+        <strong id="output"></strong>
+    </div>
+</div>
+
+<script>
+function predict() {
+    const text = document.getElementById("inputText").value;
+
+    fetch("/predict", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ text: text })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("output").innerText = data.next_word || "—";
+    });
+}
+</script>
+
+</body>
+</html>
